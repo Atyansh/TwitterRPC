@@ -1,4 +1,3 @@
-
 namespace java edu.ucsd.cse124
 namespace py cse124
 
