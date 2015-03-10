@@ -30,6 +30,12 @@ try:
   client.ping()
   print 'ping()'
 
+  client.createUser('bob')
+  client.post('bob', 'hello')
+
+  a = client.readTweetsByUser('bob',10)
+  print a
+
   # Close!
   transport.close()
 
