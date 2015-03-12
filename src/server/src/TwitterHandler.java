@@ -6,11 +6,6 @@ import java.util.Map;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-import edu.ucsd.cse124.NoSuchUserException;
-import edu.ucsd.cse124.AlreadyExistsException;
-import edu.ucsd.cse124.NoSuchTweetException;
-import edu.ucsd.cse124.TweetTooLongException;
-
 public class TwitterHandler implements Twitter.Iface {
 
   private final int MAX_TWEET_LENGTH = 140;
