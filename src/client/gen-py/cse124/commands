@@ -1,0 +1,19 @@
+#!/bin/bash 
+
+./Twitter-remote -h localhost:12345 createUser alice;
+./Twitter-remote -h localhost:12345 createUser bob;
+./Twitter-remote -h localhost:12345 createUser oscar;
+./Twitter-remote -h localhost:12345 createUser bob;
+
+./Twitter-remote -h localhost:12345 subscribe alice bob;
+./Twitter-remote -h localhost:12345 subscribe alice oscar;
+
+./Twitter-remote -h localhost:12345 post bob bob_tweet_1;
+./Twitter-remote -h localhost:12345 post bob bob_tweet_2;
+./Twitter-remote -h localhost:12345 post oscar oscar_tweet_1;
+./Twitter-remote -h localhost:12345 post bob bob_tweet_3;
+./Twitter-remote -h localhost:12345 post oscar oscar_tweet_2;
+
+./Twitter-remote -h localhost:12345 readTweetsBySubscription alice 100;
+./Twitter-remote -h localhost:12345 readTweetsBySubscription alice 2;
+./Twitter-remote -h localhost:12345 readTweetsByUser bob 50;

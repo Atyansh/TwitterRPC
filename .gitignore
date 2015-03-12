@@ -1,9 +1,3 @@
 *.swp
 *.class
 *.pyc
-*.jar
-src/client/gen-py
-src/server/gen-java
-ATM/src/client/gen-py
-ATM/src/server/gen-java
-
