@@ -246,7 +246,7 @@ except Thrift.TException, tx:
 
 try:
   print "\nTrying to star a non-existent tweet, should get exception"
-  client.star('alice', 10)
+  client.star('alice', 1034235)
   failed()
 except Thrift.TException, tx:
   print '%s' % (tx)
@@ -254,6 +254,11 @@ except Thrift.TException, tx:
 
 print "\n\nAll tests completed"
 print "Number of failures: " + str(failures)
+
+if(failures > 0):
+  print "\nSo some failures occurred, all tests should have passed. Please make sure that server did not have a previous saved state"
+else:
+  print "\nAll tests passed. Rejoice!"
 
 # Close!
 transport.close()

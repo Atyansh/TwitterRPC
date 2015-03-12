@@ -12,8 +12,6 @@ public class TwitterHandler implements Twitter.Iface {
 
   private static long tweetCount = 0;
 
-  Object lock = new Object();
-
   private Map<String,User> users;
   private Map<TweetKey,Tweet> tweets;
 
@@ -28,7 +26,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public void createUser(String handle) throws AlreadyExistsException {
+  public synchronized void createUser(String handle) throws AlreadyExistsException {
     if(users.containsKey(handle)) {
       throw new AlreadyExistsException(handle);
     }
@@ -36,7 +34,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public void subscribe(String handle, String theirhandle)
+  public synchronized void subscribe(String handle, String theirhandle)
                         throws NoSuchUserException {
     User subscriber = users.get(handle);
     User subscribee = users.get(theirhandle);
@@ -52,7 +50,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public void unsubscribe(String handle, String theirhandle)
+  public synchronized void unsubscribe(String handle, String theirhandle)
                           throws NoSuchUserException {
     User subscriber = users.get(handle);
     User subscribee = users.get(theirhandle);
@@ -68,7 +66,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public void post(String handle, String tweetString)
+  public synchronized void post(String handle, String tweetString)
                    throws NoSuchUserException, TweetTooLongException {
     User user = users.get(handle);
 
@@ -82,13 +80,11 @@ public class TwitterHandler implements Twitter.Iface {
     
     Tweet tweet = new Tweet();
 
-    synchronized(lock) {
-      tweet.handle = handle;
-      tweet.tweetId = tweetCount++;
-      tweet.posted = System.currentTimeMillis()/1000;
-      tweet.numStars = 0;
-      tweet.tweetString = tweetString;
-    }
+    tweet.handle = handle;
+    tweet.tweetId = tweetCount++;
+    tweet.posted = System.currentTimeMillis()/1000;
+    tweet.numStars = 0;
+    tweet.tweetString = tweetString;
 
     TweetKey tKey = new TweetKey(tweet.tweetId, tweet.posted);
 
@@ -97,7 +93,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public List<Tweet> readTweetsByUser(String handle, int howmany)
+  public synchronized List<Tweet> readTweetsByUser(String handle, int howmany)
                                       throws NoSuchUserException {
     User user = users.get(handle);
 
@@ -113,7 +109,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public List<Tweet> readTweetsBySubscription(String handle, int howmany)
+  public synchronized List<Tweet> readTweetsBySubscription(String handle, int howmany)
                                               throws NoSuchUserException {
     User user = users.get(handle);
 
@@ -129,7 +125,7 @@ public class TwitterHandler implements Twitter.Iface {
   }
 
   @Override
-  public void star(String handle, long tweetId) throws NoSuchUserException,
+  public synchronized void star(String handle, long tweetId) throws NoSuchUserException,
                                                        NoSuchTweetException {
     User user = users.get(handle);
     
@@ -144,10 +140,8 @@ public class TwitterHandler implements Twitter.Iface {
       throw new NoSuchTweetException();
     }
 
-    synchronized(lock) {
-      if(user.star(tKey)) {
-        tweet.numStars++;
-      }
+    if(user.star(tKey)) {
+      tweet.numStars++;
     }
   }
 }
