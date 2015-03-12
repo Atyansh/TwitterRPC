@@ -21,7 +21,7 @@ def failed():
   print "Something went wrong, test failed, quitting now"
   failures += 1
 
-transport = TSocket.TSocket('localhost', 12345)
+transport = TSocket.TSocket('localhost', 9090)
 
 # Buffering is critical. Raw sockets are very slow
 transport = TTransport.TBufferedTransport(transport)
