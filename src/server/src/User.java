@@ -22,6 +22,7 @@ public class User {
     this.handle = handle;
     
     subscribed = new HashSet<>();
+    starred = new HashSet<>();
     tweets = new LinkedList<>();
   }
 
